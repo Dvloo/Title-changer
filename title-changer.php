@@ -80,3 +80,17 @@ function run_title_changer() {
 
 }
 run_title_changer();
+
+
+add_action("admin_menu", "addMenu");
+function addMenu()
+
+{
+add_menu_page("Title-Changer Options", "Title-Changer Options", 4, "title-changer-options", "titleMenu");
+}
+
+function titleMenu()
+{
+	echo "Hello World!";
+}
+
