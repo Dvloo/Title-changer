@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Title_Changer
  * @subpackage Title_Changer/includes
- * @author     Damian <Damian@markethinq.nl>
+ * @author     Damian <damian@markethinq.nl>
  */
 class Title_Changer_i18n {
 
@@ -35,7 +35,7 @@ class Title_Changer_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'title changer',
+			'title-changer',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

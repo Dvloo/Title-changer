@@ -19,7 +19,7 @@
  *
  * @package    Title_Changer
  * @subpackage Title_Changer/includes
- * @author     Damian <Damian@markethinq.nl>
+ * @author     Damian <damian@markethinq.nl>
  */
 class Title_Changer_Loader {
 

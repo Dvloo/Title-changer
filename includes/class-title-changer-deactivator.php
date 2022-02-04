@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fired during plugin activation
+ * Fired during plugin deactivation
  *
  * @link       http://localhost/markethinqwp
  * @since      1.0.0
@@ -11,16 +11,16 @@
  */
 
 /**
- * Fired during plugin activation.
+ * Fired during plugin deactivation.
  *
- * This class defines all code necessary to run during the plugin's activation.
+ * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
  * @package    Title_Changer
  * @subpackage Title_Changer/includes
- * @author     Damian <Damian@markethinq.nl>
+ * @author     Damian <damian@markethinq.nl>
  */
-class Title_Changer_Activator {
+class Title_Changer_Deactivator {
 
 	/**
 	 * Short Description. (use period)
@@ -29,7 +29,7 @@ class Title_Changer_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+	public static function deactivate() {
 
 	}
 

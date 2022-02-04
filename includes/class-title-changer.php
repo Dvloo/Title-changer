@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Title_Changer
  * @subpackage Title_Changer/includes
- * @author     Damian <Damian@markethinq.nl>
+ * @author     Damian <damian@markethinq.nl>
  */
 class Title_Changer {
 
@@ -67,12 +67,12 @@ class Title_Changer {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'TITLE CHANGER_VERSION' ) ) {
-			$this->version = TITLE CHANGER_VERSION;
+		if ( defined( 'TITLE_CHANGER_VERSION' ) ) {
+			$this->version = TITLE_CHANGER_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'title changer';
+		$this->plugin_name = 'title-changer';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -103,24 +103,24 @@ class Title_Changer {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-title changer-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-title-changer-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-title changer-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-title-changer-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-title changer-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-title-changer-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-title changer-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-title-changer-public.php';
 
 		$this->loader = new Title_Changer_Loader();
 
