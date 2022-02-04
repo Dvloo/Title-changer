@@ -93,4 +93,20 @@ function titleMenu()
 {
 	echo "Hello World!";
 }
+?>
+
+<form method="post" action="<?php admin_url( 'admin-post.php' ); ?>">
+<input type="hidden" name="action" value="process_form">
+<label for="name">Name:</label>   <input type="text" name="name" id="name">   
+<?php 
+wp_dropdown_pages( array(
+    'child_of'     => 0,
+    'sort_order'   => 'ASC',
+    'sort_column'  => 'post_title',
+    'hierarchical' => 1,
+    'post_type' => 'page'
+) );
+?>
+<input type="submit" name="submit" value="Submit"> </form>
+
 
