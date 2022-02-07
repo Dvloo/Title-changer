@@ -95,8 +95,8 @@ function titleMenu()
 }
 ?>
 
-<form method="post" action="<?php admin_url( 'admin-post.php' ); ?>">
-<input type="hidden" name="action" value="process_form">
+<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+<input type="hidden" name="action" value="title_changer">
 <label for="name">Name:</label>   <input type="text" name="name" id="name">   
 <?php 
 wp_dropdown_pages( array(
@@ -107,6 +107,25 @@ wp_dropdown_pages( array(
     'post_type' => 'page'
 ) );
 ?>
-<input type="submit" name="submit" value="Submit"> </form>
+<input type="submit" name="title_changer" value="Submit"> </form>
 
+<?php
+
+add_action('admin_post_title_changer', 'title_changer');
+function title_changer() {
+    print_r($_POST);
+    
+    $my_post = array(
+        'ID'           => $_POST['page_id'],
+        'post_title'   => $_POST['name'],
+        'post_content' => $_POST['title_changer'],
+        
+    );
+   
+  // Update the post into the database
+    wp_update_post( $my_post );
+}
+
+
+?>
 
