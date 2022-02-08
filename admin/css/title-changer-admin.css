@@ -2,12 +2,9 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- .body {
-     margin-left: 50px;
-    margin-top: 50px;
-    }
 
-    .select#page_id{
-        margin-left: 50px;
+    .forms-title-changer {
+        margin-left: 500px;
         margin-top: 50px;
+     
     }

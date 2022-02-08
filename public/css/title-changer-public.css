@@ -2,3 +2,9 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ 
+ .forms-title-changer {
+    margin-left: 500px;
+    margin-top: 50px;
+background-color: black;
+}
