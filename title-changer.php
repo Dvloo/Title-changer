@@ -132,20 +132,18 @@ function title_changer()
 
 ?>
 
-<form action="<?php esc_url(admin_url('admin-post.php')); ?>" method="post">
+<form action="<?php  echo esc_url(admin_url('admin-post.php')); ?>" method="post">
     <input type="hidden" name="action" value="page_status">
     <select>
         <?php
-            $page = get_page( 1 );
 
-            echo "<option>".$page->post_status."</option>";
-
+            foreach(get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
+                echo "<option>".$status->name."</option>";
+            }
         ?>
     </select>
     
     <?php
-    
-
     wp_dropdown_pages(array(
         'child_of'     => 0,
         'sort_order'   => 'ASC',
@@ -158,16 +156,15 @@ function title_changer()
 </form>
 
 <?php
-add_action('admin_post_page_text', 'page_text');
-function page_text()
+add_action('admin_post_page_status', 'page_status');
+function page_status()
 {
     print_r($_POST);
 
     $my_post = array(
         'ID'           => $_POST['page_id'],
-        ''   => $_POST['txt'],
-        'post_content' => $_POST['page_text'],
-
+        'post_status'   => $_POST[''],
+        'post_content' => $_POST['page_status'],
     );
 
     // Update the post into the database
