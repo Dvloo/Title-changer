@@ -132,17 +132,15 @@ function title_changer()
 
 ?>
 
-<form action="<?php  echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
     <input type="hidden" name="action" value="page_status">
-    <select>
+    <select name="status">
         <?php
 
-            foreach(get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
-                echo "<option>".$status->name."</option>";
-            }
-        ?>
-    </select>
-    
+        
+foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
+            echo "<option>" . $status->name . "</option>";
+    <input type="datetime-local" name="date">
     <?php
     wp_dropdown_pages(array(
         'child_of'     => 0,
@@ -152,22 +150,28 @@ function title_changer()
         'post_type' => 'page'
     ));
     ?>
-    <input type="submit" name="page_status" value="Submit">
+    <input type="submit" name="date_changer" value="Submit">
 </form>
 
 <?php
-add_action('admin_post_page_status', 'page_status');
-function page_status()
+
+add_action('admin_post_date_changer', 'date_changer');
+function date_changer()
 {
     print_r($_POST);
 
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_status'   => $_POST[''],
-        'post_content' => $_POST['page_status'],
+    $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
+  
+    $timepost = wp_update_post(
+        array(
+            'ID'            => $_POST['page_id'],
+            'post_date'     => $time,
+            'post_date_gmt' => get_gmt_from_date($time)
+        )
     );
 
     // Update the post into the database
-    wp_update_post($my_post);
+    wp_update_post($timepost);
 }
+
 ?>
