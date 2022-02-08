@@ -137,9 +137,46 @@ function title_changer()
     <select name="status">
         <?php
 
-        
-foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
+        foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
             echo "<option>" . $status->name . "</option>";
+        }
+        ?>
+    </select>
+
+    <?php
+    wp_dropdown_pages(array(
+        'child_of'     => 0,
+        'sort_order'   => 'ASC',
+        'sort_column'  => 'post_title',
+        'hierarchical' => 1,
+        'post_type' => 'page'
+    ));
+    ?>
+    <input type="submit" name="page_status" value="Submit">
+</form>
+
+<?php
+add_action('admin_post_page_status', 'page_status');
+function page_status()
+{
+    print_r($_POST);
+
+    $my_post = array(
+        'ID'           => $_POST['page_id'],
+        'post_status'   => $_POST['status'],
+        'post_content' => $_POST['page_status'],
+    );
+
+    // Update the post into the database
+    wp_update_post($my_post);
+}
+
+
+?>
+
+
+<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+    <input type="hidden" name="action" value="date_changer">
     <input type="datetime-local" name="date">
     <?php
     wp_dropdown_pages(array(
