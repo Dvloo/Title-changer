@@ -34,7 +34,7 @@
 <div class="forms" style="width: 60%; display:flex; flex-direction: column; align-content: center; margin-left: 17.5%; margin-top: 25px;">
     <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="title_changer">
-        <label for="name">Name:</label> <input type="text" name="name" id="name">
+        <label for="name">Name: </label> <input type="text" name="name" id="name">
         <?php
         wp_dropdown_pages(array(
             'child_of'     => 0,
@@ -49,6 +49,7 @@
 
     <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="page_status">
+        <label for="status">Status: </label>
         <select name="status">
             <?php
 
@@ -72,6 +73,7 @@
 
     <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="date_changer">
+        <label for="date">Date: </label>
         <input type="datetime-local" name="date">
         <?php
         wp_dropdown_pages(array(
@@ -88,7 +90,7 @@
     
     <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="password_changer">
-        <label for="name">password:</label> <input type="text" name="password" id="name">
+        <label for="name">Password: </label> <input type="text" name="password" id="name">
         <?php
         wp_dropdown_pages(array(
             'child_of'     => 0,
