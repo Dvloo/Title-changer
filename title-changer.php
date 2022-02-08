@@ -96,119 +96,154 @@ function titleMenu()
     echo "Hello World!";
 }
 ?>
-
-<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
-    <input type="hidden" name="action" value="title_changer">
-    <label for="name">Name:</label> <input type="text" name="name" id="name">
-    <?php
-    wp_dropdown_pages(array(
-        'child_of'     => 0,
-        'sort_order'   => 'ASC',
-        'sort_column'  => 'post_title',
-        'hierarchical' => 1,
-        'post_type' => 'page'
-    ));
-    ?>
-    <input type="submit" name="title_changer" value="Submit">
-</form>
-
-<?php
-
-add_action('admin_post_title_changer', 'title_changer');
-function title_changer()
-{
-    print_r($_POST);
-
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_title'   => $_POST['name'],
-        'post_content' => $_POST['title_changer'],
-
-    );
-
-    // Update the post into the database
-    wp_update_post($my_post);
-}
-
-?>
-
-<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
-    <input type="hidden" name="action" value="page_status">
-    <select name="status">
+<div class="forms">
+    <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+        <input type="hidden" name="action" value="title_changer">
+        <label for="name">Name:</label> <input type="text" name="name" id="name">
         <?php
-
-        foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
-            echo "<option>" . $status->name . "</option>";
-        }
+        wp_dropdown_pages(array(
+            'child_of'     => 0,
+            'sort_order'   => 'ASC',
+            'sort_column'  => 'post_title',
+            'hierarchical' => 1,
+            'post_type' => 'page'
+        ));
         ?>
-    </select>
+        <input type="submit" name="title_changer" value="Submit">
+    </form>
 
     <?php
-    wp_dropdown_pages(array(
-        'child_of'     => 0,
-        'sort_order'   => 'ASC',
-        'sort_column'  => 'post_title',
-        'hierarchical' => 1,
-        'post_type' => 'page'
-    ));
+
+    add_action('admin_post_title_changer', 'title_changer');
+    function title_changer()
+    {
+        print_r($_POST);
+
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_title'   => $_POST['name'],
+            'post_content' => $_POST['title_changer'],
+
+        );
+
+        // Update the post into the database
+        wp_update_post($my_post);
+    }
+
     ?>
-    <input type="submit" name="page_status" value="Submit">
-</form>
 
-<?php
-add_action('admin_post_page_status', 'page_status');
-function page_status()
-{
-    print_r($_POST);
+    <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+        <input type="hidden" name="action" value="page_status">
+        <select name="status">
+            <?php
 
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_status'   => $_POST['status'],
-        'post_content' => $_POST['page_status'],
-    );
+            foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
+                echo "<option>" . $status->name . "</option>";
+            }
+            ?>
+        </select>
 
-    // Update the post into the database
-    wp_update_post($my_post);
-}
+        <?php
+        wp_dropdown_pages(array(
+            'child_of'     => 0,
+            'sort_order'   => 'ASC',
+            'sort_column'  => 'post_title',
+            'hierarchical' => 1,
+            'post_type' => 'page'
+        ));
+        ?>
+        <input type="submit" name="page_status" value="Submit">
+    </form>
 
-
-?>
-
-
-<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
-    <input type="hidden" name="action" value="date_changer">
-    <input type="datetime-local" name="date">
     <?php
-    wp_dropdown_pages(array(
-        'child_of'     => 0,
-        'sort_order'   => 'ASC',
-        'sort_column'  => 'post_title',
-        'hierarchical' => 1,
-        'post_type' => 'page'
-    ));
+    add_action('admin_post_page_status', 'page_status');
+    function page_status()
+    {
+        print_r($_POST);
+
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_status'   => $_POST['status'],
+            'post_content' => $_POST['page_status'],
+        );
+
+        // Update the post into the database
+        wp_update_post($my_post);
+    }
+
+
     ?>
-    <input type="submit" name="date_changer" value="Submit">
-</form>
 
-<?php
 
-add_action('admin_post_date_changer', 'date_changer');
-function date_changer()
-{
-    print_r($_POST);
+    <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+        <input type="hidden" name="action" value="date_changer">
+        <input type="datetime-local" name="date">
+        <?php
+        wp_dropdown_pages(array(
+            'child_of'     => 0,
+            'sort_order'   => 'ASC',
+            'sort_column'  => 'post_title',
+            'hierarchical' => 1,
+            'post_type' => 'page'
+        ));
+        ?>
+        <input type="submit" name="date_changer" value="Submit">
+    </form>
 
-    $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
-  
-    $timepost = wp_update_post(
-        array(
-            'ID'            => $_POST['page_id'],
-            'post_date'     => $time,
-            'post_date_gmt' => get_gmt_from_date($time)
-        )
-    );
+    <?php
 
-    // Update the post into the database
-    wp_update_post($timepost);
-}
+    add_action('admin_post_date_changer', 'date_changer');
+    function date_changer()
+    {
+        print_r($_POST);
 
-?>
+        $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
+
+        $timepost = wp_update_post(
+            array(
+                'ID'            => $_POST['page_id'],
+                'post_date'     => $time,
+                'post_date_gmt' => get_gmt_from_date($time)
+            )
+        );
+
+        // Update the post into the database
+        wp_update_post($timepost);
+    }
+
+
+    ?>
+
+
+    <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+        <input type="hidden" name="action" value="password_changer">
+        <label for="name">password:</label> <input type="text" name="password" id="name">
+        <?php
+        wp_dropdown_pages(array(
+            'child_of'     => 0,
+            'sort_order'   => 'ASC',
+            'sort_column'  => 'post_title',
+            'hierarchical' => 1,
+            'post_type' => 'page'
+        ));
+        ?>
+        <input type="submit" name="password_changer" value="Submit">
+    </form>
+
+    <?php
+
+    add_action('admin_post_password_changer', 'password_changer');
+    function password_changer()
+    {
+        print_r($_POST);
+
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_password' => $_POST['password'],
+        );
+
+        // Update the post into the database
+        wp_update_post($my_post);
+    }
+    ?>
+</div>
