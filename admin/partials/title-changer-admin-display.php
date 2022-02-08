@@ -31,7 +31,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<div class="forms" style="width: 60%; display:flex; flex-direction: column; align-content: center; margin-left: 17.5%; margin-top: 25px;">
+<div class="forms">
     <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="title_changer">
         <label for="name">Name: </label> <input type="text" name="name" id="name">
