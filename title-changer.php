@@ -26,8 +26,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
@@ -35,34 +35,36 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TITLE_CHANGER_VERSION', '1.0.0' );
+define('TITLE_CHANGER_VERSION', '1.0.0');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-title-changer-activator.php
  */
-function activate_title_changer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-title-changer-activator.php';
-	Title_Changer_Activator::activate();
+function activate_title_changer()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-title-changer-activator.php';
+    Title_Changer_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-title-changer-deactivator.php
  */
-function deactivate_title_changer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-title-changer-deactivator.php';
-	Title_Changer_Deactivator::deactivate();
+function deactivate_title_changer()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-title-changer-deactivator.php';
+    Title_Changer_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_title_changer' );
-register_deactivation_hook( __FILE__, 'deactivate_title_changer' );
+register_activation_hook(__FILE__, 'activate_title_changer');
+register_deactivation_hook(__FILE__, 'deactivate_title_changer');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-title-changer.php';
+require plugin_dir_path(__FILE__) . 'includes/class-title-changer.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,11 +75,11 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-title-changer.php';
  *
  * @since    1.0.0
  */
-function run_title_changer() {
+function run_title_changer()
+{
 
-	$plugin = new Title_Changer();
-	$plugin->run();
-
+    $plugin = new Title_Changer();
+    $plugin->run();
 }
 run_title_changer();
 
@@ -86,46 +88,89 @@ add_action("admin_menu", "addMenu");
 function addMenu()
 
 {
-add_menu_page("Title-Changer Options", "Title-Changer Options", 4, "title-changer-options", "titleMenu");
+    add_menu_page("Title-Changer Options", "Title-Changer Options", 4, "title-changer-options", "titleMenu");
 }
 
 function titleMenu()
 {
-	echo "Hello World!";
+    echo "Hello World!";
 }
 ?>
 
-<form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
-<input type="hidden" name="action" value="title_changer">
-<label for="name">Name:</label>   <input type="text" name="name" id="name">   
-<?php 
-wp_dropdown_pages( array(
-    'child_of'     => 0,
-    'sort_order'   => 'ASC',
-    'sort_column'  => 'post_title',
-    'hierarchical' => 1,
-    'post_type' => 'page'
-) );
-?>
-<input type="submit" name="title_changer" value="Submit"> </form>
+<form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+    <input type="hidden" name="action" value="title_changer">
+    <label for="name">Name:</label> <input type="text" name="name" id="name">
+    <?php
+    wp_dropdown_pages(array(
+        'child_of'     => 0,
+        'sort_order'   => 'ASC',
+        'sort_column'  => 'post_title',
+        'hierarchical' => 1,
+        'post_type' => 'page'
+    ));
+    ?>
+    <input type="submit" name="title_changer" value="Submit">
+</form>
 
 <?php
 
 add_action('admin_post_title_changer', 'title_changer');
-function title_changer() {
+function title_changer()
+{
     print_r($_POST);
-    
+
     $my_post = array(
         'ID'           => $_POST['page_id'],
         'post_title'   => $_POST['name'],
         'post_content' => $_POST['title_changer'],
-        
-    );
-   
-  // Update the post into the database
-    wp_update_post( $my_post );
-}
 
+    );
+
+    // Update the post into the database
+    wp_update_post($my_post);
+}
 
 ?>
 
+<form action="<?php esc_url(admin_url('admin-post.php')); ?>" method="post">
+    <input type="hidden" name="action" value="page_status">
+    <select>
+        <?php
+            $page = get_page( 1 );
+
+            echo "<option>".$page->post_status."</option>";
+
+        ?>
+    </select>
+    
+    <?php
+    
+
+    wp_dropdown_pages(array(
+        'child_of'     => 0,
+        'sort_order'   => 'ASC',
+        'sort_column'  => 'post_title',
+        'hierarchical' => 1,
+        'post_type' => 'page'
+    ));
+    ?>
+    <input type="submit" name="page_status" value="Submit">
+</form>
+
+<?php
+add_action('admin_post_page_text', 'page_text');
+function page_text()
+{
+    print_r($_POST);
+
+    $my_post = array(
+        'ID'           => $_POST['page_id'],
+        ''   => $_POST['txt'],
+        'post_content' => $_POST['page_text'],
+
+    );
+
+    // Update the post into the database
+    wp_update_post($my_post);
+}
+?>
