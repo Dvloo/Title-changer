@@ -97,6 +97,7 @@ function titleMenu()
 }
 
 
+
 add_action('admin_post_title_changer', 'title_changer');
 function title_changer()
 {
@@ -168,5 +169,4 @@ function password_changer()
     // Update the post into the database
     wp_update_post($my_post);
 }
-
 ?>

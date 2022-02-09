@@ -4,7 +4,16 @@
  */
 
     .forms-title-changer {
-        margin-left: 500px;
+        margin-left: 200px;
         margin-top: 50px;
-     
+   
+    }
+
+    .input-form {
+      
+    }
+
+    .formulier {
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
