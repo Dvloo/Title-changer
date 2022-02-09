@@ -42,7 +42,7 @@
             'sort_column'  => 'post_title',
             'hierarchical' => 1,
             'post_type' => 'page',
-            'post_status' =>  get_post_stati(),
+            'post_status' => get_post_stati(),
         ));
         ?>
         <input type="submit" name="title_changer" value="Submit">
@@ -71,6 +71,7 @@
                     echo "<option>".$post->post_status."</option>";
                     array_push($currentstatus, $post->post_status);
                 }
+
             }
             /*foreach (get_post_stati(array('show_status_list' => true), 'objects') as $status) {
                 echo "<option>" . $status->name . "</option>";
@@ -88,6 +89,7 @@
             'hierarchical' => 1,
             'post_type' => 'page',
             'post_status' =>  get_post_stati(),
+
         ));
         ?>
         <input type="submit" name="page_status" value="Submit">
@@ -122,6 +124,7 @@
             'hierarchical' => 1,
             'post_type' => 'page',
             'post_status' =>  get_post_stati(),
+
         ));
         ?>
         <input type="submit" name="password_changer" value="Submit">

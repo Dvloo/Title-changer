@@ -151,8 +151,6 @@ function date_changer()
 }
 
 
-
-
 add_action('admin_post_password_changer', 'password_changer');
 function password_changer()
 {
@@ -167,5 +165,11 @@ function password_changer()
 
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
+
+
+
+
+
+
 
 ?>
