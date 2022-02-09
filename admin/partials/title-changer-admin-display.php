@@ -52,7 +52,6 @@
         <label for="status">Status: </label>
         <select name="status">
             <?php
-
             foreach (get_post_stati(array('show_in_admin_status_list' => true), 'objects') as $status) {
                 echo "<option>" . $status->name . "</option>";
             }

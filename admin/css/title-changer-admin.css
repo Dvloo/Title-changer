@@ -2,9 +2,33 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ .body {
+    margin-left: 50px;
+    margin-top: 50px;
+}
 
-    .forms-title-changer {
-        margin-left: 500px;
-        margin-top: 50px;
-     
-    }
+.select#page_id{
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.forms {
+    width: auto;
+    display:flex;
+    flex-direction: column;
+    align-content: center; 
+    margin-left: 5%;
+    margin-top: 25px;
+}
+
+input[type=submit] {
+    border-style: none;
+    border-width: 1px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+input[type=submit]:hover {
+    background-color: lightskyblue;
+    box-shadow: 4px 4px 3px lightgray;
+}
