@@ -1,6 +1,6 @@
 
 <?php
-
+session_start();
 /**
  * The plugin bootstrap file
  *
@@ -89,25 +89,53 @@ add_action("admin_menu", "addMenu");
 function addMenu()
 {
     add_menu_page("Title-Changer Options", "Title-Changer Options", 4, "title-changer-options", "titleMenu");
+    add_submenu_page("title-changer-options", "Post Changer", "Post Changer", "manage_options", "post_changer", "post_changer");
 }
 
-function titleMenu()
+function post_changer()
 {
+    // Kinda a weird way to make a session without it having data, might be chanced though
+    if(empty($_SESSION['post_name'])){ $_SESSION['post_name'] = null; }
+    if(empty($_SESSION['post_status'])){ $_SESSION['post_status'] = null; }
+    if(empty($_SESSION['post_password'])){ $_SESSION['post_password'] = null; }
+    if(empty($_SESSION['post_date'])){ $_SESSION['post_date'] = null; }
     require_once('admin/partials/title-changer-admin-display.php');
 }
+function titleMenu()
+{
+    echo "<DIV><h2>Very good very nice</h2><br><h1>HEYA SEXY BANANA</h1></DIV>";
+}
 
-
+add_action('admin_post_select_page', 'select_page');
+function select_page()
+{
+    $post = get_post($_POST['selectpage']);
+    $_SESSION['post_name'] = $post->post_title;
+    $_SESSION['post_status'] = $post->post_status;
+    $_SESSION['post_password'] = $post->post_password;
+    $_SESSION['post_date'] = $post->post_date;
+    $_SESSION['selected'] = true;
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+ 
+}
 
 add_action('admin_post_title_changer', 'title_changer');
 function title_changer()
 {
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_title'   => $_POST['name'],
-        'post_content' => $_POST['title_changer'],
-    );
-    // Update the post into the database
-    wp_update_post($my_post);
+    if ($_POST['name'] == null) {
+        $_SESSION['errMes'] = "Name cannot be empty";
+    } elseif ($_POST['page_id'] == null) {
+        $_SESSION['errMes'] = "No page selected";
+    } else {
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_title'   => $_POST['name'],
+            'post_content' => $_POST['title_changer'],
+        );
+        // Update the post into the database
+        wp_update_post($my_post);
+        $_SESSION['success'] = "Name changed";
+    }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
@@ -116,14 +144,18 @@ function title_changer()
 add_action('admin_post_page_status', 'page_status');
 function page_status()
 {
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_status'   => $_POST['status'],
-    );
+    if ($_POST['page_id'] == null) {
+        $_SESSION['errMes'] = "No page selected";
+    } else {
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_status'   => $_POST['status'],
+        );
 
-    // Update the post into the database
-    wp_update_post($my_post);
-
+        // Update the post into the database
+        wp_update_post($my_post);
+        $_SESSION['success'] = "Status changed";
+    }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
@@ -134,19 +166,25 @@ add_action('admin_post_date_changer', 'date_changer');
 function date_changer()
 {
 
-    $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
+    if ($_POST['date'] == null) {
+        $_SESSION['errMes'] = "Date cannot be empty";
+    } elseif ($_POST['page_id'] == null) {
+        $_SESSION['errMes'] = "No page selected";
+    } else {
+        $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
 
-    $timepost = wp_update_post(
-        array(
-            'ID'            => $_POST['page_id'],
-            'post_date'     => $time,
-            'post_date_gmt' => get_gmt_from_date($time)
-        )
-    );
+        $timepost = wp_update_post(
+            array(
+                'ID'            => $_POST['page_id'],
+                'post_date'     => $time,
+                'post_date_gmt' => get_gmt_from_date($time)
+            )
+        );
 
-    // Update the post into the database
-    wp_update_post($timepost);
-
+        // Update the post into the database
+        wp_update_post($timepost);
+        $_SESSION['success'] = "Date changed";
+    }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
@@ -154,15 +192,18 @@ function date_changer()
 add_action('admin_post_password_changer', 'password_changer');
 function password_changer()
 {
+    if ($_POST['page_id'] == null) {
+        $_SESSION['errMes'] = "No page selected";
+    } else {
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_password' => $_POST['password'],
+        );
 
-    $my_post = array(
-        'ID'           => $_POST['page_id'],
-        'post_password' => $_POST['password'],
-    );
-
-    // Update the post into the database
-    wp_update_post($my_post);
-
+        // Update the post into the database
+        wp_update_post($my_post);
+        $_SESSION['success'] = "Password changed";
+    }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 

@@ -1,6 +1,14 @@
 (function($) {
     'use strict';
+    //document.getElementById("statuslabel").style.display = "none";
+    //var status_dropdown = document.getElementById("status_dropdown")
 
+    //status_dropdown.addEventListener("change", (event) => {
+    //    document.getElementById("statuslabel").style.display = "none";
+    //    var dropdown_value = status_dropdown.value;
+    //    document.getElementById(dropdown_value).style.display = "block";
+    //});
+    
     /**
      * All of the code for your admin-facing JavaScript source
      * should reside in this file.
@@ -28,11 +36,14 @@
      * Although scripts in the WordPress core, Plugins and Themes may be
      * practising this, we should strive to set a better example in our own work.
      */
-    $('#statuslabel').hide();
-    $('#status_dropdown').change(function() {
+
+    $(document).ready(function() {
         $('#statuslabel').hide();
-        var value = $('#status_dropdown').val();
-        $('#' + value).show();
+        $('#status_dropdown').change(function() {
+            $('#statuslabel').hide();
+            var value = $('#status_dropdown').val();
+            $('#' + value).show();
+        });
     });
 
 })(jQuery);
