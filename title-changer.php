@@ -101,17 +101,13 @@ function titleMenu()
 add_action('admin_post_title_changer', 'title_changer');
 function title_changer()
 {
-
     $my_post = array(
         'ID'           => $_POST['page_id'],
         'post_title'   => $_POST['name'],
         'post_content' => $_POST['title_changer'],
-
     );
-
     // Update the post into the database
     wp_update_post($my_post);
-
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
@@ -120,11 +116,9 @@ function title_changer()
 add_action('admin_post_page_status', 'page_status');
 function page_status()
 {
-
     $my_post = array(
         'ID'           => $_POST['page_id'],
         'post_status'   => $_POST['status'],
-        'post_content' => $_POST['page_status'],
     );
 
     // Update the post into the database
