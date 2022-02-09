@@ -101,7 +101,6 @@ function titleMenu()
 add_action('admin_post_title_changer', 'title_changer');
 function title_changer()
 {
-    print_r($_POST);
 
     $my_post = array(
         'ID'           => $_POST['page_id'],
@@ -112,6 +111,8 @@ function title_changer()
 
     // Update the post into the database
     wp_update_post($my_post);
+
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 
@@ -119,7 +120,6 @@ function title_changer()
 add_action('admin_post_page_status', 'page_status');
 function page_status()
 {
-    print_r($_POST);
 
     $my_post = array(
         'ID'           => $_POST['page_id'],
@@ -129,6 +129,8 @@ function page_status()
 
     // Update the post into the database
     wp_update_post($my_post);
+
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 
@@ -137,7 +139,6 @@ function page_status()
 add_action('admin_post_date_changer', 'date_changer');
 function date_changer()
 {
-    print_r($_POST);
 
     $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
 
@@ -151,15 +152,14 @@ function date_changer()
 
     // Update the post into the database
     wp_update_post($timepost);
+
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
-
-
 
 
 add_action('admin_post_password_changer', 'password_changer');
 function password_changer()
 {
-    print_r($_POST);
 
     $my_post = array(
         'ID'           => $_POST['page_id'],
@@ -168,5 +168,14 @@ function password_changer()
 
     // Update the post into the database
     wp_update_post($my_post);
+
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
+
+
+
+
+
+
+
 ?>

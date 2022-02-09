@@ -3,17 +3,47 @@
  * included in this file.
  */
 
-    .forms-title-changer {
-        margin-left: 200px;
-        margin-top: 50px;
-   
-    }
+ .body {
+    margin-left: 50px;
+    margin-top: 50px;
+}
 
-    .input-form {
-      
-    }
+.select#page_id {
+    margin-left: 50px;
+    margin-top: 50px;
+}
 
-    .formulier {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+input[type=submit] {
+    border: 0.5px rgb(122, 122, 122) solid;
+    text-align: center;
+    border-radius: 4px;
+    background-color: white;
+}
+
+input[type=submit]:hover {
+    background-color: rgb(45, 150, 248);
+    box-shadow: 4px 4px 3px lightgray;
+    border: 1px rgb(45, 150, 248) solid;
+    color: white;
+}
+
+.body {
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.forms-title-changer {
+    margin-left: 200px;
+    margin-top: 50px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.formulier {
+    margin-bottom: 20px;
+    display: inline-grid;
+    grid-gap: 10px;
+    grid-template-columns: 70px 200px 175px 70px;
+}
