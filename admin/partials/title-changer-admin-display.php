@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 <?php
 
 /**
@@ -31,17 +30,19 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <div class="forms-title-changer">
     <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="title_changer">
-        <label for="name">Name:</label> <input class="input-form" type="text" name="name" id="name">
+        <label for="name">Name:</label> <input type="text" name="name" id="name">
         <?php
         wp_dropdown_pages(array(
             'child_of'     => 0,
             'sort_order'   => 'ASC',
             'sort_column'  => 'post_title',
             'hierarchical' => 1,
-            'post_type' => 'page'
+            'post_type' => 'page',
+            'post_status' => get_post_stati(),
         ));
         ?>
         <input type="submit" name="title_changer" value="Submit">
@@ -49,6 +50,7 @@
 
     <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="page_status">
+        <label for="status">Status: </label>
         <select name="status">
             <?php
 
@@ -64,7 +66,8 @@
             'sort_order'   => 'ASC',
             'sort_column'  => 'post_title',
             'hierarchical' => 1,
-            'post_type' => 'page'
+            'post_type' => 'page',
+            'post_status' => get_post_stati(),
         ));
         ?>
         <input type="submit" name="page_status" value="Submit">
@@ -72,6 +75,7 @@
 
     <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="date_changer">
+        <label for="date">Date: </label>
         <input type="datetime-local" name="date">
         <?php
         wp_dropdown_pages(array(
@@ -79,25 +83,26 @@
             'sort_order'   => 'ASC',
             'sort_column'  => 'post_title',
             'hierarchical' => 1,
-            'post_type' => 'page'
+            'post_type' => 'page',
+            'post_status' => get_post_stati(),
         ));
         ?>
         <input type="submit" name="date_changer" value="Submit">
     </form>
 
-    
+
     <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="password_changer">
-        <label for="name">password:</label> <input type="text" name="password" id="name">
+        <label for="name">Password: </label> <input type="text" name="password" id="name">
         <?php
         wp_dropdown_pages(array(
             'child_of'     => 0,
             'sort_order'   => 'ASC',
             'sort_column'  => 'post_title',
             'hierarchical' => 1,
-            'post_type' => 'page'
+            'post_type' => 'page',
+            'post_status' => get_post_stati(),
         ));
         ?>
         <input type="submit" name="password_changer" value="Submit">
     </form>
-</div>
