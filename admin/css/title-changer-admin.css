@@ -4,8 +4,23 @@
  */
 
 .body {
-    margin-left: 50px;
-    margin-top: 50px;
+    background-color: #f0f0f1;
+    width: 100%;
+    height: 100vh;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    min-width: 600px;
+    padding: 5px 20px;
+}
+
+.wp-admin {
+    background-color: #f0f0f1;
+}
+
+.forms-title-changer h1 {
+    font-size: 23px;
+    font-weight: 400;
+    padding: 9px 0 24px;
+    line-height: 1.3;
 }
 
 .select#page_id {
@@ -14,36 +29,48 @@
 }
 
 input[type=submit] {
-    border: 0.5px rgb(122, 122, 122) solid;
+    border: 0.5px #2271b1 solid;
     text-align: center;
-    border-radius: 4px;
-    background-color: white;
+    border-radius: 2px;
+    background-color: #2271b1;
+    color: #fff;
 }
 
 input[type=submit]:hover {
-    background-color: rgb(45, 150, 248);
+    background-color: #2468a0;
     box-shadow: 4px 4px 3px lightgray;
-    border: 1px rgb(45, 150, 248) solid;
+    border: 0.5px #2468a0 solid;
     color: white;
 }
 
-.body {
-    margin-left: 50px;
-    margin-top: 50px;
+.forms-title-changer {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin: 10px 20px 0 2px;
 }
 
-.forms-title-changer {
-    margin-left: 200px;
-    margin-top: 50px;
-    width: auto;
+.formulier {
     display: flex;
     flex-direction: column;
     align-content: center;
 }
 
-.formulier {
+label{
+    vertical-align: middle;
+    font-size: 0.83em;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.grid {
     margin-bottom: 20px;
     display: inline-grid;
     grid-gap: 10px;
-    grid-template-columns: 70px 200px 175px 70px;
+    grid-template-columns: 300px 200px;
+}
+
+.firstgrid {
+    grid-template-columns: 300px 200px 170px;
 }
