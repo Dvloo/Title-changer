@@ -37,4 +37,14 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
+
+    $(document).ready(function() {
+        $('#statuslabel').hide();
+        $('#status_dropdown').change(function() {
+            $('#statuslabel').hide();
+            var value = $('#status_dropdown').val();
+            $('#' + value).show();
+        });
+    });
+
 })(jQuery);

@@ -89,29 +89,55 @@ add_action("admin_menu", "addMenu");
 function addMenu()
 {
     add_menu_page("Title-Changer Options", "Title-Changer Options", "manage_options", "title-changer-options", "titleMenu");
+
     add_submenu_page("title-changer-options", "Post Changer", "Post Changer", "manage_options", "post_changer", "post_changer");
 }
 
 function post_changer()
 {
     // Kinda a weird way to make a session without it having data, might be chanced though
-    if (empty($_SESSION['post_name'])) {
-        $_SESSION['post_name'] = null;
-    }
-    if (empty($_SESSION['post_status'])) {
-        $_SESSION['post_status'] = null;
-    }
-    if (empty($_SESSION['post_password'])) {
-        $_SESSION['post_password'] = null;
-    }
-    if (empty($_SESSION['post_date'])) {
-        $_SESSION['post_date'] = null;
-    }
+    if(empty($_SESSION['post_name'])){ $_SESSION['post_name'] = null; }
+    if(empty($_SESSION['post_status'])){ $_SESSION['post_status'] = null; }
+    if(empty($_SESSION['post_password'])){ $_SESSION['post_password'] = null; }
+    if(empty($_SESSION['post_date'])){ $_SESSION['post_date'] = null; }
     require_once('admin/partials/title-changer-admin-display.php');
 }
 function titleMenu()
 {
     echo "<DIV><h2>Very good very nice</h2><br><h1>HEYA SEXY BANANA</h1></DIV>";
+}
+
+add_action('admin_post_select_page', 'select_page');
+function select_page()
+{
+    $post = get_post($_POST['selectpage']);
+    $_SESSION['post_name'] = $post->post_title;
+    $_SESSION['post_status'] = $post->post_status;
+    $_SESSION['post_password'] = $post->post_password;
+    $_SESSION['post_date'] = $post->post_date;
+    $_SESSION['selected'] = true;
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+ 
+}
+
+add_action('admin_post_title_changer', 'title_changer');
+function title_changer()
+{
+    if ($_POST['name'] == null) {
+        $_SESSION['errMes'] = "Name cannot be empty";
+    } elseif ($_POST['page_id'] == null) {
+        $_SESSION['errMes'] = "No page selected";
+    } else {
+        $my_post = array(
+            'ID'           => $_POST['page_id'],
+            'post_title'   => $_POST['name'],
+            'post_content' => $_POST['title_changer'],
+        );
+        // Update the post into the database
+        wp_update_post($my_post);
+        $_SESSION['success'] = "Name changed";
+    }
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 add_action('admin_post_select_page', 'select_page');
@@ -190,10 +216,6 @@ function form_send()
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
-
-
-
-
 
 
 
