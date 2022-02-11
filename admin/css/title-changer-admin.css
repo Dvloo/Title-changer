@@ -73,4 +73,11 @@ label{
 
 .firstgrid {
     grid-template-columns: 300px 200px 170px;
+<<<<<<< Updated upstream
+=======
+}
+
+#footer-thankyou{
+    display: none !important;
+>>>>>>> Stashed changes
 }
