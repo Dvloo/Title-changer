@@ -37,7 +37,6 @@
     <div class="forms-title-changer">
         <h1>Post changer</h1>
         <!-- Form for first select page -->
-
         <?php if ($_SESSION['errMes'] != null) {
             echo "<div class='text-white bg-danger h-25 w-50 mb-5 p-3 text-center'>
                 <h2 class='text-white'>" . $_SESSION['errMes'] . "</h2>
