@@ -238,7 +238,7 @@ function update_product()
         $quantity = $_POST['quantity'];
         $title = $_POST['title'];
         $price = $_POST['price'];
-        $image_url = $_POST['image'];
+        $files = $_FILES['image'];
 
         //Destroys session when variables have data
         session_destroy();
@@ -267,18 +267,34 @@ function update_product()
         } else {
             $_SESSION['errMes'] = "Price cannot be empty";
         }
-        if (!empty($image_url)) {
-            update_post_meta($product_id, '_product_image_gallery', implode(',', $image_url));
-            if (empty($_SESSION['errMes'])) {
-                $_SESSION['success'] = "Product updated";
-            }
+        if (!empty($files)) {
+
+
+            $file = array(
+                'name' => $files['name'],
+                'type' => $files['type'],
+                'tmp_name' => $files['tmp_name'],
+                'error' => $files['error'],
+                'size' => $files['size']
+            );
+
+            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+
+            $attachment_id = media_handle_upload($file, $product_id);
+            $vv .= $attachment_id . ",";
+
+            update_post_meta($product_id, '_product_image_gallery',  $vv);
         }
-        wp_safe_redirect(wp_get_referer());
-    }
-    else {
+
+        if (empty($_SESSION['errMes'])) {
+            $_SESSION['success'] = "Product updated";
+        }
+    } else {
         wp_delete_post($product_id);
         session_destroy();
         $_SESSION['success'] = "Product has been deleted";
     }
+    wp_safe_redirect(wp_get_referer());
 }
+
 ?>
