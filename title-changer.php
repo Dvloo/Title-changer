@@ -105,13 +105,6 @@ function post_changer()
         $_SESSION['post_date'] = null;
         $_SESSION['post_id'] = null;
         $_SESSION['post_selected'] = null;
-<<<<<<< Updated upstream
-    }
-    if (!empty($_SESSION['errMes'])) {
-        $_SESSION['errMes'] = null;
-    }
-    if (!empty($_SESSION['success'])) {
-=======
         //Reset for products sessions   
         $_SESSION['product_id'] = null;
         $_SESSION['product_title'] = null;
@@ -122,7 +115,6 @@ function post_changer()
         $_SESSION['errMes'] = null;
     }
     if (empty($_SESSION['success'])) {
->>>>>>> Stashed changes
         $_SESSION['success'] = null;
     }
 
@@ -136,10 +128,7 @@ function titleMenu()
 add_action('admin_post_select_page', 'select_page');
 function select_page()
 {
-<<<<<<< Updated upstream
-=======
     //Give sessions data with data from database from the page you want data from
->>>>>>> Stashed changes
     $post = get_post($_POST['selectpage']);
     $_SESSION['post_selected'] = $_POST['selectpage'];
     $_SESSION['post_name'] = $post->post_title;
@@ -149,96 +138,6 @@ function select_page()
     $_SESSION['post_date'] = $post->post_date;
     $_SESSION['selected'] = true;
     wp_safe_redirect(wp_get_referer());
-<<<<<<< Updated upstream
-}
-
-add_action('admin_post_form_send', 'form_send');
-function form_send()
-{
-    if (!empty($_POST['name']) && (!empty($_POST['date']))) {
-        if (!empty($_POST['name'])) {
-            $my_post = array(
-                'ID'           => $_POST['page_id'],
-                'post_title'   => $_POST['name'],
-                'post_content' => $_POST['title_changer'],
-            );
-            // Update the post into the database
-            wp_update_post($my_post);
-        }
-
-        if (!empty($_POST['date'])) {
-            $time = date('Y-m-d H:i:s', strtotime($_POST['date']));
-
-            $timepost = wp_update_post(
-                array(
-                    'ID'            => $_POST['page_id'],
-                    'post_date'     => $time,
-                    'post_date_gmt' => get_gmt_from_date($time)
-                )
-            );
-
-            // Update the post into the database
-            wp_update_post($timepost);
-        }
-
-
-        //Update for password
-        $my_post = array(
-            'ID'           => $_POST['page_id'],
-            'post_password' => $_POST['password'],
-        );
-        // Update the post into the database
-        wp_update_post($my_post);
-
-        //Update for status
-        $my_post = array(
-            'ID'           => $_POST['page_id'],
-            'post_status'   => $_POST['status'],
-        );
-
-        // Update the post into the database
-        wp_update_post($my_post);
-        $_SESSION['success'] = "Post updated";
-    }
-
-
-
-    if (empty($_POST['date'])) {
-        $_SESSION['errMes'] = "Date cannot be empty";
-    }
-    if (empty($_POST['page_id'])) {
-        $_SESSION['errMes'] = "No page selected";
-    }
-    if (empty($_POST['name'])) {
-        $_SESSION['errMes'] = "Name cannot be empty";
-    }
-    session_destroy();
-    wp_safe_redirect(wp_get_referer());
-}
-
-
-
-
-add_action('admin_post_change_quantity', 'change_quantity');
-function change_quantity()
-{
-
-    $product_id = $_POST['product'];
-    $quantity = $_POST['quantity'];
-
-    // Update the post into the database
-    update_post_meta($product_id, '_stock', $quantity);
-    
-    if($quantity == 0){
-        update_post_meta( $product_id, '_stock_status', wc_clean( 'outofstock' ) );
-    }
-
-    wp_safe_redirect(wp_get_referer());
-}
-
-
-
-=======
 }
 
 add_action('admin_post_form_send', 'form_send');
@@ -373,13 +272,13 @@ function update_product()
             if (empty($_SESSION['errMes'])) {
                 $_SESSION['success'] = "Product updated";
             }
-        } else {
-            wp_delete_post($product_id);
-            session_destroy();
-            $_SESSION['success'] = "Product has been deleted";
         }
         wp_safe_redirect(wp_get_referer());
     }
+    else {
+        wp_delete_post($product_id);
+        session_destroy();
+        $_SESSION['success'] = "Product has been deleted";
+    }
 }
->>>>>>> Stashed changes
 ?>
