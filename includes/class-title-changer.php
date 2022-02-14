@@ -156,6 +156,11 @@ class Title_Changer {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		add_action('admin_post_select_page', 'select_page');
+		add_action('admin_post_form_send','form_send');
+		add_action('admin_post_select_product', 'select_product');
+		add_action('admin_post_update_product', 'update_product');
+		
 
 	}
 

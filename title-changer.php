@@ -119,7 +119,6 @@ function titleMenu()
 
 /* This function is just so he can put an id into a session so
 *  The page knows what id he needs to load see  function */
-add_action('admin_post_select_page', 'select_page');
 function select_page()
 {
     //Give sessions data with data from database from the page you want data from
@@ -139,7 +138,6 @@ function get_page_data($id)
 /* This function will update a specific page. It will check if everything is filled in.
 *  After that he will put it into the database. If not it will give an error.
 */
-add_action('admin_post_form_send', 'form_send');
 function form_send()
 {
     $name = $_POST['name'];
@@ -214,7 +212,6 @@ function form_send()
 
 /* This function is just so he can put an id into a session so
 *  The page knows what id he needs to load see Get_Product_Data function */
-add_action('admin_post_select_product', 'select_product');
 function select_product()
 {
     $product = wc_get_product($_POST['product']);
@@ -235,7 +232,7 @@ function get_product_data($id)
 
 /* This function will update the product you have selected.
 *  He will check if every field has been filled in and will store the new data */
-add_action('admin_post_update_product', 'update_product');
+
 function update_product()
 {
     $product_id = $_POST['product'];
