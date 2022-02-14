@@ -99,17 +99,9 @@ function post_changer()
     */
 
     if (empty($_SESSION)) {
-        $_SESSION['post_name'] = null;
-        $_SESSION['post_status'] = null;
-        $_SESSION['post_password'] = null;
-        $_SESSION['post_date'] = null;
+        //Reset id
         $_SESSION['post_id'] = null;
-        $_SESSION['post_selected'] = null;
-        //Reset for products sessions   
         $_SESSION['product_id'] = null;
-        $_SESSION['product_title'] = null;
-        $_SESSION['product_quantity'] = null;
-        $_SESSION['product_price'] =  null;
     }
     if (empty($_SESSION['errMes'])) {
         $_SESSION['errMes'] = null;
@@ -122,24 +114,31 @@ function post_changer()
 }
 function titleMenu()
 {
-    echo "<DIV><h2>Very good very nice</h2><br><h1>HEYA SEXY BANANA</h1></DIV>";
+    
 }
 
+/* This function is just so he can put an id into a session so
+*  The page knows what id he needs to load see  function */
 add_action('admin_post_select_page', 'select_page');
 function select_page()
 {
     //Give sessions data with data from database from the page you want data from
     $post = get_post($_POST['selectpage']);
-    $_SESSION['post_selected'] = $_POST['selectpage'];
-    $_SESSION['post_name'] = $post->post_title;
-    $_SESSION['post_status'] = $post->post_status;
     $_SESSION['post_id'] = $post->ID;
-    $_SESSION['post_password'] = $post->post_password;
-    $_SESSION['post_date'] = $post->post_date;
-    $_SESSION['selected'] = true;
     wp_safe_redirect(wp_get_referer());
 }
 
+/* This will get the data from a specific page.
+*  You need the select_page function because in this function $_POST will not work  */
+function get_page_data($id)
+{
+    $post = get_post($id);
+    return $post;
+}
+
+/* This function will update a specific page. It will check if everything is filled in.
+*  After that he will put it into the database. If not it will give an error.
+*/
 add_action('admin_post_form_send', 'form_send');
 function form_send()
 {
@@ -167,7 +166,6 @@ function form_send()
 
         if (!empty($date)) {
             $time = date('Y-m-d H:i:s', strtotime($date));
-
             $timepost = wp_update_post(
                 array(
                     'ID'            => $page_id,
@@ -200,8 +198,6 @@ function form_send()
         $_SESSION['success'] = "Post updated";
     }
 
-
-
     if (empty($date)) {
         $_SESSION['errMes'] = "Date cannot be empty";
     }
@@ -216,20 +212,29 @@ function form_send()
 
 
 
-
+/* This function is just so he can put an id into a session so
+*  The page knows what id he needs to load see Get_Product_Data function */
 add_action('admin_post_select_product', 'select_product');
 function select_product()
 {
     $product = wc_get_product($_POST['product']);
-
     $_SESSION['product_id'] = $product->get_id();
-    $_SESSION['product_title'] = $product->get_name();
-    $_SESSION['product_quantity'] = $product->get_stock_quantity();
-    $_SESSION['product_price'] = $product->get_price();
+    get_product_data($_POST['product']);
     wp_safe_redirect(wp_get_referer());
 }
 
+/* Gets the product data from woocommerce. 
+*  This functions returns the product data that will be load into the page 
+*  Because $_POST does not work in here you need the function select_product();
+*/
+function get_product_data($id)
+{
+    $products = wc_get_product($id);
+    return $products;
+}
 
+/* This function will update the product you have selected.
+*  He will check if every field has been filled in and will store the new data */
 add_action('admin_post_update_product', 'update_product');
 function update_product()
 {
@@ -239,7 +244,6 @@ function update_product()
         $title = $_POST['title'];
         $price = $_POST['price'];
         $image_url = $_FILES['image'];
-
         //Destroys session when variables have data
         session_destroy();
 
@@ -267,13 +271,11 @@ function update_product()
         } else {
             $_SESSION['errMes'] = "Price cannot be empty";
         }
-        
-        if (!empty($image_url)) {
-            
-            //$path_parts = pathinfo($image_url['tmp_name']);
-            //die($path_parts['dirname']."/".$path_parts['filename']. ".jpg");
-            move_uploaded_file($image_url['name'], "/Users/yoloc/Desktop/");
-            //Generate_Featured_Image($path_parts['dirname']."\\".$path_parts['filename']. ".tmp", $product_id);   
+
+        if ($image_url['error'] == 0) {
+            move_uploaded_file($image_url['tmp_name'], __DIR__ . '/../../uploads/' . $_FILES["image"]['name']);
+            Generate_Featured_Image(__DIR__ . '/../../uploads/' . $_FILES["image"]['name'], $product_id);
+            unlink(__DIR__ . '/../../uploads/' . $_FILES["image"]['name']);
         }
 
         if (empty($_SESSION['errMes'])) {
@@ -287,17 +289,19 @@ function update_product()
     wp_safe_redirect(wp_get_referer());
 }
 
-function Generate_Featured_Image( $image_url, $post_id  ){
+/* This function will update the image from a specific product.  */
+function Generate_Featured_Image($image_url, $post_id)
+{
     $upload_dir = wp_upload_dir();
     $image_data = file_get_contents($image_url);
     $filename = basename($image_url);
-    if(wp_mkdir_p($upload_dir['path']))
-      $file = $upload_dir['path'] . '/' . $filename;
+    if (wp_mkdir_p($upload_dir['path']))
+        $file = $upload_dir['path'] . '/' . $filename;
     else
-      $file = $upload_dir['basedir'] . '/' . $filename;
+        $file = $upload_dir['basedir'] . '/' . $filename;
     file_put_contents($file, $image_data);
 
-    $wp_filetype = wp_check_filetype($filename, null );
+    $wp_filetype = wp_check_filetype($filename, null);
 
     $attachment = array(
         'post_mime_type' => $wp_filetype['type'],
@@ -305,10 +309,10 @@ function Generate_Featured_Image( $image_url, $post_id  ){
         'post_content' => '',
         'post_status' => 'inherit'
     );
-    $attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+    $attach_id = wp_insert_attachment($attachment, $file, $post_id);
     require_once(ABSPATH . 'wp-admin/includes/image.php');
-    $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-    $res1= wp_update_attachment_metadata( $attach_id, $attach_data );
-    $res2= set_post_thumbnail( $post_id, $attach_id );
+    $attach_data = wp_generate_attachment_metadata($attach_id, $file);
+    $res1 = wp_update_attachment_metadata($attach_id, $attach_data);
+    $res2 = set_post_thumbnail($post_id, $attach_id);
 }
 ?>

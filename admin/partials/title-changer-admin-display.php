@@ -35,6 +35,8 @@
 
 <div class="body">
     <div class="forms-title-changer">
+        <?php $pages = get_page_data($_SESSION['post_id']);
+        ?>
         <h1>Post changer</h1>
         <!-- Form for first select page -->
         <?php if ($_SESSION['errMes'] != null) {
@@ -71,13 +73,13 @@
         <?php if (!empty($_SESSION['post_id'])) : ?>
             <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
                 <?php
-                echo "<select style='display: none;' name='page_id'> <option selected>" . $_SESSION['post_id'] . "</option> </select>";
+                echo "<select style='display: none;' name='page_id'> <option selected>" . $pages->ID . "</option> </select>";
                 ?>
                 <div class="grid">
                     <input type="hidden" name="action" value="form_send">
                     <?php
                     echo '<label for="name">Name: </label>';
-                    echo '<input type="text" name="name" value="' . $_SESSION['post_name'] . '" id="name">';
+                    echo '<input required type="text" name="name" value="' . $pages->post_title . '" id="name">';
                     ?>
                 </div>
                 <div class="grid">
@@ -96,7 +98,7 @@
                     <select name="status">
                         <?php
                         foreach (get_post_statuses() as $post) {
-                            if ($_SESSION['post_status'] == $post) {
+                            if ($pages->post_status == $post) {
                                 echo "<option selected>" . $post . "</option>";
                             } else {
                                 echo "<option>" . $post . "</option>";
@@ -108,16 +110,15 @@
                 <div class="grid">
                     <label for="date">Date: </label>
                     <?php
-                    $date = date('Y-m-d\TH:i', strtotime($_SESSION['post_date']));
-                    echo '<input type="datetime-local" name="date" value="' . $date . '">';
+                    $date = date('Y-m-d\TH:i', strtotime($pages->post_date));
+                    echo '<input required type="datetime-local" name="date" value="' . $date . '">';
 
 
                     ?>
                 </div>
                 <div class="grid">
                     <?php
-                    echo '<label for="name">Password: </label> <input type="text" name="password"  value="' . $_SESSION['post_password'] . '" id="name">';
-
+                    echo '<label for="name">Password: </label> <input type="text" name="password"  value="' . $pages->post_password . '" id="name">';
                     ?>
                     <input style="width: 50%;" class="button button-primary" type="submit" name="form_send" value="Submit">
                 </div>
@@ -127,7 +128,7 @@
 
             </form>
         <?php endif; ?>
-
+        <?php $products = get_product_data($_SESSION['product_id']); ?>
         <h1>Product changer</h1>
         <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
             <div class="grid firstgrid">
@@ -155,28 +156,29 @@
             </div>
         </form>
         <?php if (!empty($_SESSION['product_id'])) : ?>
+            
             <!-- Main form for updating product -->
             <form class="formulier" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" enctype='multipart/form-data'>
                 <input type="hidden" name="action" value="update_product">
                 <?php
-                echo "<select style='display: none;' name='product'> <option selected>" . $_SESSION['product_id'] . "</option> </select>";
+                echo "<select style='display: none;' name='product'> <option selected>" . $products->get_id() . "</option> </select>";
                 ?>
                 <div class="grid">
-                    <?php
+                    <?php     
                     echo '<label for="title">Title: </label>';
-                    echo '<input type="text" name="title" value="' . $_SESSION['product_title'] . '" id="name">';
+                    echo '<input required type="text" name="title" value="' . $products->get_name() . '" id="name">';
                     ?>
                 </div>
                 <div class="grid">
                     <?php
                     echo '<label for="quantity">Quantity: </label>';
-                    echo '<input type="text" name="quantity" value="' . $_SESSION['product_quantity'] . '" id="name">';
+                    echo '<input required type="number" name="quantity" value="' . $products->get_stock_quantity() . '" id="name">';
                     ?>
                 </div>
                 <div class="grid">
                     <?php
                     echo '<label for="price">Price: </label>';
-                    echo '<input type="text" name="price" value="' . $_SESSION['product_price'] . '" id="name">';
+                    echo '<input required type="number" name="price" value="' . $products->get_price() . '" id="name">';
                     ?>
                 </div>
                 <div class="grid">
@@ -186,7 +188,10 @@
 
                         <!-- This is for when you want to see the image of product -->
                         <?php if (get_the_post_thumbnail_url($_SESSION['product_id']) != null) : ?>
-                            <img class="product_image" style="width: 100%; border: 1px black solid; border-radius: 3px; margin-top: 10px;" src="<?php echo get_the_post_thumbnail_url($_SESSION['product_id']); ?>" class="img-responsive" alt="" />
+                            <?php
+                                $productlink = "https://".ltrim(str_replace("//","/",get_the_post_thumbnail_url($_SESSION['product_id'])), "https:");
+                                //$productlink = get_the_post_thumbnail_url($_SESSION['product_id']);?>
+                            <img class="product_image" style="width: 100%; border: 1px black solid; border-radius: 3px; margin-top: 10px;" src="<?php echo $productlink ?>" class="img-responsive" alt="" />
                         <?php else : ?>
                             <p style="padding:25%; border: 1px black solid; border-radius: 3px; margin-top: 10px;  text-align: center;" src="no_image.png">No image</p>
                         <?php endif; ?>
