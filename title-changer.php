@@ -238,7 +238,7 @@ function update_product()
         $quantity = $_POST['quantity'];
         $title = $_POST['title'];
         $price = $_POST['price'];
-        $files = $_FILES['image'];
+        $image_url = $_FILES['image'];
 
         //Destroys session when variables have data
         session_destroy();
@@ -267,23 +267,13 @@ function update_product()
         } else {
             $_SESSION['errMes'] = "Price cannot be empty";
         }
-        if (!empty($files)) {
-
-
-            $file = array(
-                'name' => $files['name'],
-                'type' => $files['type'],
-                'tmp_name' => $files['tmp_name'],
-                'error' => $files['error'],
-                'size' => $files['size']
-            );
-
-            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-
-            $attachment_id = media_handle_upload($file, $product_id);
-            $vv .= $attachment_id . ",";
-
-            update_post_meta($product_id, '_product_image_gallery',  $vv);
+        
+        if (!empty($image_url)) {
+            
+            //$path_parts = pathinfo($image_url['tmp_name']);
+            //die($path_parts['dirname']."/".$path_parts['filename']. ".jpg");
+            move_uploaded_file($image_url['name'], "/Users/yoloc/Desktop/");
+            //Generate_Featured_Image($path_parts['dirname']."\\".$path_parts['filename']. ".tmp", $product_id);   
         }
 
         if (empty($_SESSION['errMes'])) {
@@ -297,4 +287,28 @@ function update_product()
     wp_safe_redirect(wp_get_referer());
 }
 
+function Generate_Featured_Image( $image_url, $post_id  ){
+    $upload_dir = wp_upload_dir();
+    $image_data = file_get_contents($image_url);
+    $filename = basename($image_url);
+    if(wp_mkdir_p($upload_dir['path']))
+      $file = $upload_dir['path'] . '/' . $filename;
+    else
+      $file = $upload_dir['basedir'] . '/' . $filename;
+    file_put_contents($file, $image_data);
+
+    $wp_filetype = wp_check_filetype($filename, null );
+
+    $attachment = array(
+        'post_mime_type' => $wp_filetype['type'],
+        'post_title' => sanitize_file_name($filename),
+        'post_content' => '',
+        'post_status' => 'inherit'
+    );
+    $attach_id = wp_insert_attachment( $attachment, $file, $post_id );
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+    $res1= wp_update_attachment_metadata( $attach_id, $attach_data );
+    $res2= set_post_thumbnail( $post_id, $attach_id );
+}
 ?>

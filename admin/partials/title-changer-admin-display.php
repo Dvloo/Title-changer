@@ -186,7 +186,7 @@
 
                         <!-- This is for when you want to see the image of product -->
                         <?php if (get_the_post_thumbnail_url($_SESSION['product_id']) != null) : ?>
-                            <img style="width: 100%; border: 1px black solid; border-radius: 3px; margin-top: 10px;" src="<?php echo get_the_post_thumbnail_url($_SESSION['product_id']); ?>" class="img-responsive" alt="" />
+                            <img class="product_image" style="width: 100%; border: 1px black solid; border-radius: 3px; margin-top: 10px;" src="<?php echo get_the_post_thumbnail_url($_SESSION['product_id']); ?>" class="img-responsive" alt="" />
                         <?php else : ?>
                             <p style="padding:25%; border: 1px black solid; border-radius: 3px; margin-top: 10px;  text-align: center;" src="no_image.png">No image</p>
                         <?php endif; ?>
